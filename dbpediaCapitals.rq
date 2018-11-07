@@ -1,0 +1,20 @@
+#+ summary: Get capitals from dbpedia
+#+ endpoint: http://dbpedia.org/sparql
+#+ endpoint_in_url: False
+
+PREFIX dbo: <http://dbpedia.org/ontology/>
+
+SELECT ?country_name ?capital_name ?population
+WHERE {
+  ?country rdf:type dbo:Country .
+  ?country dbo:capital ?capital .
+
+  ?capital rdfs:label  ?capital_name .
+  ?country rdfs:label  ?country_name .
+  ?country dbo:populationTotal ?population .
+
+  FILTER (lang(?capital_name) = 'en')
+  FILTER (lang(?country_name) = 'en')
+  FILTER NOT EXISTS { ?country dbo:dissolutionYear ?yearEnd }
+  FILTER (?population > 500000)
+} LIMIT 1000
