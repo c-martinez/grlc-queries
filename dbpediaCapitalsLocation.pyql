@@ -1,0 +1,31 @@
+from pythonql.Executor import *
+
+features = [
+  select {
+        "type": "Feature",
+        "properties": {
+          "population": population,
+          "name": name
+        },
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            float(long),
+            float(lat)
+          ]
+        }
+      }
+  for item in dataIn['results']['bindings']
+  let lat = item['lat']['value']
+  let long = item['long']['value']
+  let population = item['population']['value']
+  let country = item['country_name']['value']
+  let capital = item['capital_name']['value']
+  let name = country + ', ' + capital
+]
+result = {
+  "type": "FeatureCollection",
+  "features": features
+}
+
+dataOut = result
